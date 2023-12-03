@@ -49,13 +49,17 @@ cargo scaffold <day>
 
 Individual solutions live in the `./src/bin/` directory as separate binaries. _Inputs_ and _examples_ live in the the `./data` directory.
 
-Every [solution](https://github.com/fspoettel/advent-of-code-rust/blob/main/src/bin/scaffold.rs#L11-L41) has _unit tests_ referencing its _example_ file. Use these unit tests to develop and debug your solutions against the example input.
+Every [solution](https://github.com/fspoettel/advent-of-code-rust/blob/main/src/template/commands/scaffold.rs#L9-L35) has _tests_ referencing its _example_ file in `./data/examples`. Use these tests to develop and debug your solutions against the example input.
 
-Tip: when editing a solution, `rust-analyzer` will display buttons for running / debugging unit tests above the unit test blocks.
+> [!TIP]
+> If a day has different example inputs for both parts, you can use the `read_file_part()` helper in your tests instead of `read_file()`. For example, if this applies to day 1, you can create a second example file `01-2.txt` and invoke the helper like `let result = part_two(&advent_of_code::template::read_file_part("examples", DAY, 2));` to read it in `test_part_two`.
+
+> [!TIP]
+> when editing a solution, `rust-analyzer` will display buttons for running / debugging unit tests above the unit test blocks.
 
 ### Download input & description for a day
 
-> **Note**  
+> [!IMPORTANT] 
 > This command requires [installing the aoc-cli crate](#configure-aoc-cli-integration).
 
 ```sh
@@ -92,7 +96,7 @@ For example, running a benchmarked, optimized execution of day 1 would look like
 
 #### Submitting solutions
 
-> **Note**  
+> [!IMPORTANT]
 > This command requires [installing the aoc-cli crate](#configure-aoc-cli-integration).
 
 In order to submit part of a solution for checking, append the `--submit <part>` option to the `solve` command.
@@ -113,13 +117,13 @@ cargo all
 # Total: 0.20ms
 ```
 
-This runs all solutions sequentially and prints output to the command-line. Same as for the `solve` command, `--release` controls whether real inputs will be used.
+This runs all solutions sequentially and prints output to the command-line. Same as for the `solve` command, the `--release` flag runs an optimized build.
 
 #### Update readme benchmarks
 
-The template can output a table with solution times to your readme. Please note that these are not "scientific" benchmarks, understand them as a fun approximation. 😉
+The template can output a table with solution times to your readme. In order to generate a benchmarking table, run `cargo all --release --time`. If everything goes well, the command will output "_Successfully updated README with benchmarks._" after the execution finishes and the readme will be updated.
 
-In order to generate a benchmarking table, run `cargo all --release --time`. If everything goes well, the command will output "_Successfully updated README with benchmarks._" after the execution finishes.
+Please note that these are not "scientific" benchmarks, understand them as a fun approximation. 😉 Timings, especially in the microseconds range, might change a bit between invocations.
 
 ### Run all tests
 
@@ -143,7 +147,7 @@ cargo clippy
 
 ### Read puzzle description in terminal
 
-> **Note**  
+> [!IMPORTANT]
 > This command requires [installing the aoc-cli crate](#configure-aoc-cli-integration).
 
 ```sh
@@ -163,7 +167,7 @@ cargo read <day>
 1. Install [`aoc-cli`](https://github.com/scarvalhojr/aoc-cli/) via cargo: `cargo install aoc-cli --version 0.12.0`
 2. Create an `.adventofcode.session` file in your home directory and paste your session cookie. To retrieve the session cookie, press F12 anywhere on the Advent of Code website to open your browser developer tools. Look in _Cookies_ under the _Application_ or _Storage_ tab, and copy out the `session` cookie value. [^1]
 
-Once installed, you can use the [download command](#download-input--description-for-a-day) and automatically submit solutions via the [`--submit` flag](#submitting-solutions).
+Once installed, you can use the [download command](#download-input--description-for-a-day), the read command, and automatically submit solutions via the [`--submit` flag](#submitting-solutions).
 
 ### Automatically track ⭐️ progress in the readme
 
@@ -185,7 +189,7 @@ Go to the _Secrets_ tab in your repository settings and create the following sec
 
 Go to the _Variables_ tab in your repository settings and create the following variable:
 
--   `AOC_ENABLED`: This variable controls whether the workflow is enabled. Set it to `true` to enable the progress tracker.
+-   `AOC_ENABLED`: This variable controls whether the workflow is enabled. Set it to `true` to enable the progress tracker. After you complete AoC or no longer work on it, you can set this to `false` to disable the CI.
 
 ✨ You can now run this action manually via the _Run workflow_ button on the workflow page. If you want the workflow to run automatically, uncomment the `schedule` section in the `readme-stars.yml` workflow file or add a `push` trigger.
 
